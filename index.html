@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air quality tester</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/1a4203ce90.js" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script type="module" src="main.js"></script>
+</head>
+<body>
+    <div id="header">
+        <ul id="nav">
+            <li>
+                <a href="#home">
+                    <i class="fa-solid fa-house"></i>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="#details">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    Details
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="home">
+        <br>
+        <h1>Home:</h1>
+        <div class="row">
+            <div class="ihome" id="left-ihome">
+                <img src="./pics/aqindex1.png" alt="">
+            </div>
+            <div class="ihome" id="mid-ihome">
+                <div class="device-name">Air quality tester</div>
+                <div class="clock">
+                    <div class="hour"></div>
+                    <div class="min"></div>
+                    <div class="sec"></div>
+                </div>
+                <span>AQI Value</span>
+                <div id="aqi-value">Undefined</div>
+                <span>AQI Status</span>
+                <div id="aqi-status">Undefined</div>
+            </div>
+            <div class="ihome" id="right-ihome">
+                <div id="swt-btn">
+                    <div class="inner-swt-btn">
+                        <div class="toggle">
+                            <p>Rooms</p>
+                        </div>
+                        <div class="toggle">
+                            <p>Account</p>
+                        </div>
+                    </div>
+                    <div class="inner-swt-btn" id='toggle-btn'>
+                        <div class="toggle">
+                            <p>Rooms</p>
+                        </div>
+                        <div class="toggle">
+                            <p>Account</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="account-box" id="login-div">
+                    <h2>Login</h2>
+                    <input type="email" id="login-email" class="text-field" name="login-email" placeholder="Email" /> <br>
+                    <input type="password" name="login-password" class="text-field" id="login-password" placeholder="Password" /> <br>
+                    <button id="login-btn" class="btn-style">Login</button> <br>       
+                    <button id="reg-btn" class="an-btn">Don't have an account? REGISTER</button>
+                </div>
+                <div class="account-box" id="register-div">
+                    <h2>Register</h2>
+                    <input type="email" id="register-email" class="text-field" name="register-email" placeholder="Email" /> <br>
+                    <input type="password" name="register-password" class="text-field" id="register-password" placeholder="Password" /> <br>
+                    <button id="register-btn" class="btn-style">Register</button> <br>
+                    <button id="log-btn" class="an-btn">Have an account? LOGIN</button>
+                </div>
+                <div id="result-box">
+                    <h3 id="result"></h3>
+                </div>
+                <div id="account-info">
+                    <h2><i class="fa-solid fa-user"></i>  Account</h2>
+                    <div>
+                        <span>Email</span>
+                        <div class="account-email">
+                            <div id="hid-email">********</div>
+                            <button class="fa-regular fa-eye-slash" id="eye-slash-btn1"></button>
+                            <button class="fa-regular fa-eye" id="eye-btn1"></button>
+                        </div> 
+                        <span>Password</span>
+                        <div class="account-password">
+                            <div id="hid-password">********</div>
+                            <button class="fa-regular fa-eye-slash" id="eye-slash-btn2"></button>
+                            <button class="fa-regular fa-eye" id="eye-btn2"></button>
+                        </div>
+                    </div>
+                    <button id="log-out-btn" class="btn-style">LOG OUT</button>
+                    <button id="log-out-yes-btn" class="btn-style">Yes</button>
+                    <button id="log-out-no-btn" class="btn-style">No</button>
+                </div>
+                <div id="container">
+                    <div class="segmented-control">
+                      <input type="radio" name="radio2" value="3" id="tab-1" checked/>
+                      <label for="tab-1" class= "segmented-control__1">
+                        <p>Room 1</p></label>
+                      <input type="radio" name="radio2" value="4" id="tab-2" />
+                      <label for="tab-2" class= "segmented-control__2">
+                        <p>Room 2</p></label>
+                      <input type="radio" name="radio2" value="5" id="tab-3" />
+                      <label for="tab-3" class= "segmented-control__3">
+                        <p>Room 3</p></label>
+                      <div class="segmented-control__color"></div>
+                    </div>
+                </div>
+                <p id="rooms-noti">You can change the room</p>
+            </div>
+        </div>  
+        <audio id="audio1" src="./sounds/warning1.mp3" type="audio/mpeg">
+            <source src="./sounds/warning1.mp3" type="audio/wav">
+        </audio>      
+        <audio id="audio2" src="./sounds/warning2.mp3" type="audio/mpeg">
+            <source src="./sounds/warning2.mp3" type="audio/wav">
+        </audio>      
+    </div>
+    <div id="details">
+        <br>
+        <h1>Details:</h1>
+        <div class="row">
+            <div class="item">
+                <span>Temperature</span>
+                <svg version="1.1" baseProfile="full" width="190" height="190" xmlns="http://www.w3.org/2000/svg" id="svg1">
+                    <linearGradient id="gradient" x1="0" x2="1" y1="0" y2="0">
+                      <stop offset="0%" stop-color="#b96e85"/>
+                      <stop offset="100%" stop-color="#ae96bb"/>
+                    </linearGradient>
+                    <path id="path1" d="M5 95 A80 80 0 0 1 185 95" stroke=url(#gradient) fill="none" stroke-width="8"
+                    stroke-linecap="round" stroke-dasharray="0 292.78"/>
+                </svg>
+                <span class="displayData" id="displayTem">Undefined</span>
+                <span class="units" id="celcius">°C</span>
+            </div>
+            <div class="item">
+                <span>Humidity</span>
+                <svg version="1.1" baseProfile="full" width="190" height="190" xmlns="http://www.w3.org/2000/svg" id="svg2">
+                    <linearGradient id="gradient" x1="0" x2="1" y1="0" y2="0">
+                      <stop offset="0%" stop-color="#b96e85"/>
+                      <stop offset="100%" stop-color="#ae96bb"/>
+                    </linearGradient>
+                    <path id="path2" d="M5 95 A80 80 0 0 1 185 95" stroke=url(#gradient) fill="none" stroke-width="8"
+                    stroke-linecap="round" stroke-dasharray="0 292.78"/>
+                </svg>
+                <span class="displayData" id="displayHum">Undefined</span>
+                <span class="units" id="percent">%</span>
+            </div>
+            <div class="item">
+                <span>CO</span>
+                <svg version="1.1" baseProfile="full" width="190" height="190" xmlns="http://www.w3.org/2000/svg" id="svg3">
+                    <linearGradient id="gradient" x1="0" x2="1" y1="0" y2="0">
+                      <stop offset="0%" stop-color="#b96e85"/>
+                      <stop offset="100%" stop-color="#ae96bb"/>
+                    </linearGradient>
+                    <path id="path3" d="M5 95 A80 80 0 0 1 185 95" stroke=url(#gradient) fill="none" stroke-width="8"
+                    stroke-linecap="round" stroke-dasharray="0 292.78"/>
+                </svg>
+                <span class="displayData" id="displayCO">Undefined</span>
+                <span class="units" id="ppm1">ppm</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="item">
+                <span>Gas</span>
+                <svg version="1.1" baseProfile="full" width="190" height="190" xmlns="http://www.w3.org/2000/svg" id="svg4">
+                    <linearGradient id="gradient" x1="0" x2="1" y1="0" y2="0">
+                      <stop offset="0%" stop-color="#b96e85"/>
+                      <stop offset="100%" stop-color="#ae96bb"/>
+                    </linearGradient>
+                    <path id="path4" d="M5 95 A80 80 0 0 1 185 95" stroke=url(#gradient) fill="none" stroke-width="8"
+                    stroke-linecap="round" stroke-dasharray="0 292.78"/>
+                </svg>
+                <span class="displayData" id="displayGas">Undefined</span>
+                <span class="units" id="ppm2">ppm</span>
+            </div>
+            <div class="item">
+                <span>PM2.5</span>
+                <svg version="1.1" baseProfile="full" width="190" height="190" xmlns="http://www.w3.org/2000/svg" id="svg5">
+                    <linearGradient id="gradient" x1="0" x2="1" y1="0" y2="0">
+                      <stop offset="0%" stop-color="#b96e85"/>
+                      <stop offset="100%" stop-color="#ae96bb"/>
+                    </linearGradient>
+                    <path id="path5" d="M5 95 A80 80 0 0 1 185 95" stroke=url(#gradient) fill="none" stroke-width="8"
+                    stroke-linecap="round" stroke-dasharray="0 292.78"/>
+                </svg>
+                <span class="displayData" id="displayPM25">Undefined</span>
+                <span class="units" id="micro1">µg/m3</span>
+            </div>
+            <div class="item">
+                <span>PM10</span>
+                <svg version="1.1" baseProfile="full" width="190" height="190" xmlns="http://www.w3.org/2000/svg" id="svg6">
+                    <linearGradient id="gradient" x1="0" x2="1" y1="0" y2="0">
+                      <stop offset="0%" stop-color="#b96e85"/>
+                      <stop offset="100%" stop-color="#ae96bb"/>
+                    </linearGradient>
+                    <path id="path6" d="M5 95 A80 80 0 0 1 185 95" stroke=url(#gradient) fill="none" stroke-width="8"
+                    stroke-linecap="round" stroke-dasharray="0 292.78"/>
+                </svg>
+                <span class="displayData" id="displayPM10">Undefined</span>
+                <span class="units" id="micro2">µg/m3</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
