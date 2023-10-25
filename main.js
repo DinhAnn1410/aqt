@@ -57,15 +57,6 @@ document.getElementById('login-btn').addEventListener('click', function() {
     .then((userCredential) => {
         const user = userCredential.user;
         if (user) {
-            var database = firebase.database();
-            var dataRefT = database.ref('Temperature');
-            var dataRefH = database.ref('Humidity');
-            var dataRefCO = database.ref('CO Value');
-            var dataRefG = database.ref('Gas Value');
-            var dataRefP25 = database.ref('PM25');
-            var dataRefP10 = database.ref('PM10');
-            var dataRefAQI = database.ref('AQI');
-
             document.getElementById('celcius').style.display="inline";
             document.getElementById('percent').style.display="inline";
             document.getElementById('micro1').style.display="inline";
@@ -75,106 +66,117 @@ document.getElementById('login-btn').addEventListener('click', function() {
             document.getElementById('swt-btn').style.display="inline";
             document.getElementById('account-info').style.marginTop="30px";
 
-            dataRefT.on('value', function(snapshot) {
-                var dataDisplayDiv1 = document.getElementById('displayTem');
-                var Tval = snapshot.val();
-                dataDisplayDiv1.textContent = Tval;
-                document.getElementById('svg1').style.display="inline";
-                const arc1 = document.querySelector("svg #path1");
-                const arc_length1 = arc1.getTotalLength();
-                const step1 = arc_length1 / (125 + 40); //length/(max-min)
-                const value1 = (snapshot.val() + 40) * step1;
-                arc1.style.strokeDasharray = `${value1} ${arc_length1 - value1}`;
-            });
+            if(loginEmail == "nghiemdinhan1410@gmail.com") {
+                var database = firebase.database();
+                var dataRefT = database.ref('/Room1/Temperature');
+                var dataRefH = database.ref('/Room1/Humidity');
+                var dataRefCO = database.ref('/Room1/CO Value');
+                var dataRefG = database.ref('/Room1/Gas Value');
+                var dataRefP25 = database.ref('/Room1/PM25');
+                var dataRefP10 = database.ref('/Room1/PM10');
+                var dataRefAQI = database.ref('/Room1/AQI');
 
-            dataRefH.on('value', function(snapshot) {
-                var dataDisplayDiv2 = document.getElementById('displayHum');
-                dataDisplayDiv2.textContent = snapshot.val();
-                document.getElementById('svg2').style.display="inline";
-                const arc2 = document.querySelector("svg #path2");
-                const arc_length2 = arc2.getTotalLength();
-                const step2 = arc_length2 / (100 - 0);
-                const value2 = (snapshot.val() - 0) * step2;
-                arc2.style.strokeDasharray = `${value2} ${arc_length2 - value2}`;
-            });
+                dataRefT.on('value', function(snapshot) {
+                    var dataDisplayDiv1 = document.getElementById('displayTem');
+                    var Tval = snapshot.val();
+                    dataDisplayDiv1.textContent = Tval;
+                    document.getElementById('svg1').style.display="inline";
+                    const arc1 = document.querySelector("svg #path1");
+                    const arc_length1 = arc1.getTotalLength();
+                    const step1 = arc_length1 / (125 + 40); //length/(max-min)
+                    const value1 = (snapshot.val() + 40) * step1;
+                    arc1.style.strokeDasharray = `${value1} ${arc_length1 - value1}`;
+                });
 
-            dataRefCO.on('value', function(snapshot) {
-                var dataDisplayDiv3 = document.getElementById('displayCO');
-                var coVal = snapshot.val();
-                dataDisplayDiv3.textContent = coVal;
-                document.getElementById('svg3').style.display="inline";
-                const arc3 = document.querySelector("svg #path3");
-                const arc_length3 = arc3.getTotalLength();
-                const step3 = arc_length3 / 800;
-                const value3 = snapshot.val() * step3;
-                arc3.style.strokeDasharray = `${value3} ${arc_length3 - value3}`;
-            });
-            
-            dataRefG.on('value', function(snapshot) {
-                var dataDisplayDiv4 = document.getElementById('displayGas');
-                var gasVal = snapshot.val();
-                dataDisplayDiv4.textContent = gasVal;
-                document.getElementById('svg4').style.display="inline";
-                const arc4 = document.querySelector("svg #path4");
-                const arc_length4 = arc4.getTotalLength();
-                const step4 = arc_length4 / 800;
-                const value4 = snapshot.val() * step4;
-                arc4.style.strokeDasharray = `${value4} ${arc_length4 - value4}`;
-                if (gasVal >= 300)
-                    audio2.play();
-                else    
-                    audio2.pause();
-            });
+                dataRefH.on('value', function(snapshot) {
+                    var dataDisplayDiv2 = document.getElementById('displayHum');
+                    dataDisplayDiv2.textContent = snapshot.val();
+                    document.getElementById('svg2').style.display="inline";
+                    const arc2 = document.querySelector("svg #path2");
+                    const arc_length2 = arc2.getTotalLength();
+                    const step2 = arc_length2 / (100 - 0);
+                    const value2 = (snapshot.val() - 0) * step2;
+                    arc2.style.strokeDasharray = `${value2} ${arc_length2 - value2}`;
+                });
 
-            dataRefP25.on('value', function(snapshot) {
-                var dataDisplayDiv5 = document.getElementById('displayPM25');
-                var pm25Val = snapshot.val();
-                dataDisplayDiv5.textContent = pm25Val;
-                document.getElementById('svg5').style.display="inline";
-                const arc5 = document.querySelector("svg #path5");
-                const arc_length5 = arc5.getTotalLength();
-                const step5 = arc_length5 / 1000; //length/(max-min)
-                const value5 = (snapshot.val()) * step5;
-                arc5.style.strokeDasharray = `${value5} ${arc_length5 - value5}`;
-            });
+                dataRefCO.on('value', function(snapshot) {
+                    var dataDisplayDiv3 = document.getElementById('displayCO');
+                    var coVal = snapshot.val();
+                    dataDisplayDiv3.textContent = coVal;
+                    document.getElementById('svg3').style.display="inline";
+                    const arc3 = document.querySelector("svg #path3");
+                    const arc_length3 = arc3.getTotalLength();
+                    const step3 = arc_length3 / 800;
+                    const value3 = snapshot.val() * step3;
+                    arc3.style.strokeDasharray = `${value3} ${arc_length3 - value3}`;
+                });
+                
+                dataRefG.on('value', function(snapshot) {
+                    var dataDisplayDiv4 = document.getElementById('displayGas');
+                    var gasVal = snapshot.val();
+                    dataDisplayDiv4.textContent = gasVal;
+                    document.getElementById('svg4').style.display="inline";
+                    const arc4 = document.querySelector("svg #path4");
+                    const arc_length4 = arc4.getTotalLength();
+                    const step4 = arc_length4 / 800;
+                    const value4 = snapshot.val() * step4;
+                    arc4.style.strokeDasharray = `${value4} ${arc_length4 - value4}`;
+                    if (gasVal >= 300)
+                        audio2.play();
+                    else    
+                        audio2.pause();
+                });
 
-            dataRefP10.on('value', function(snapshot) {
-                var dataDisplayDiv6 = document.getElementById('displayPM10');
-                var pm10Val = snapshot.val();
-                dataDisplayDiv6.textContent = pm10Val;
-                document.getElementById('svg6').style.display="inline";
-                const arc6 = document.querySelector("svg #path6");
-                const arc_length6 = arc6.getTotalLength();
-                const step6 = arc_length6 / 1000; //length/(max-min)
-                const value6 = (snapshot.val()) * step6;
-                arc6.style.strokeDasharray = `${value6} ${arc_length6 - value6}`;
-            });
+                dataRefP25.on('value', function(snapshot) {
+                    var dataDisplayDiv5 = document.getElementById('displayPM25');
+                    var pm25Val = snapshot.val();
+                    dataDisplayDiv5.textContent = pm25Val;
+                    document.getElementById('svg5').style.display="inline";
+                    const arc5 = document.querySelector("svg #path5");
+                    const arc_length5 = arc5.getTotalLength();
+                    const step5 = arc_length5 / 1000; //length/(max-min)
+                    const value5 = (snapshot.val()) * step5;
+                    arc5.style.strokeDasharray = `${value5} ${arc_length5 - value5}`;
+                });
 
-            dataRefAQI.on('value', function(snapshot) {
-                var dataDisplayDiv6 = document.getElementById('aqi-value');
-                var aqiVal = snapshot.val();
-                dataDisplayDiv6.textContent = aqiVal;
-                if (aqiVal >= 0 && aqiVal <= 50)
-                    document.getElementById('aqi-status').innerHTML="Good";
-                else if (aqiVal >= 51 && aqiVal <= 100)
-                    document.getElementById('aqi-status').innerHTML="Moderate";
-                else if (aqiVal >= 101 && aqiVal <= 150) {
-                    document.getElementById('aqi-status').innerHTML="Unhealthy LvL 1";
-                    document.getElementById('aqi-status').style.fontSize="20px";
-                }
-                else if (aqiVal >= 151 && aqiVal <= 200) {
-                    document.getElementById('aqi-status').innerHTML="Unhealthy LvL 2";
-                    document.getElementById('aqi-status').style.fontSize="20px";
-                }
-                else if (aqiVal >= 201 && aqiVal <= 300)
-                    document.getElementById('aqi-status').innerHTML="Very unhealthy";
-                else if (aqiVal >= 301)
-                    document.getElementById('aqi-status').innerHTML="Hazardous";
-                if (aqiVal >= 301)
-                    audio1.play();
-                else
-                    audio1.pause();
-            });
+                dataRefP10.on('value', function(snapshot) {
+                    var dataDisplayDiv6 = document.getElementById('displayPM10');
+                    var pm10Val = snapshot.val();
+                    dataDisplayDiv6.textContent = pm10Val;
+                    document.getElementById('svg6').style.display="inline";
+                    const arc6 = document.querySelector("svg #path6");
+                    const arc_length6 = arc6.getTotalLength();
+                    const step6 = arc_length6 / 1000; //length/(max-min)
+                    const value6 = (snapshot.val()) * step6;
+                    arc6.style.strokeDasharray = `${value6} ${arc_length6 - value6}`;
+                });
+
+                dataRefAQI.on('value', function(snapshot) {
+                    var dataDisplayDiv6 = document.getElementById('aqi-value');
+                    var aqiVal = snapshot.val();
+                    dataDisplayDiv6.textContent = aqiVal;
+                    if (aqiVal >= 0 && aqiVal <= 50)
+                        document.getElementById('aqi-status').innerHTML="Good";
+                    else if (aqiVal >= 51 && aqiVal <= 100)
+                        document.getElementById('aqi-status').innerHTML="Moderate";
+                    else if (aqiVal >= 101 && aqiVal <= 150) {
+                        document.getElementById('aqi-status').innerHTML="Unhealthy LvL 1";
+                        document.getElementById('aqi-status').style.fontSize="20px";
+                    }
+                    else if (aqiVal >= 151 && aqiVal <= 200) {
+                        document.getElementById('aqi-status').innerHTML="Unhealthy LvL 2";
+                        document.getElementById('aqi-status').style.fontSize="20px";
+                    }
+                    else if (aqiVal >= 201 && aqiVal <= 300)
+                        document.getElementById('aqi-status').innerHTML="Very unhealthy";
+                    else if (aqiVal >= 301)
+                        document.getElementById('aqi-status').innerHTML="Hazardous";
+                    if (aqiVal >= 301)
+                        audio1.play();
+                    else
+                        audio1.pause();
+                });
+            }
         }
         document.getElementById('login-div').style.display="none";
         document.getElementById('account-info').style.display="inline";
